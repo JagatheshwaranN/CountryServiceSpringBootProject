@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.countryservice.demo.bean.CountryBean;
+import com.countryservice.demo.bean.Country;
 import com.countryservice.demo.bean.CountryResponse;
 import com.countryservice.demo.service.CountryService;
 
@@ -29,33 +29,33 @@ public class CountryController {
 	CountryService countryService;
 
 	@GetMapping("/getcountries")
-	public List<CountryBean> getCountries() {
-		return countryService.getCountries();
+	public List<Country> getCountries() {
+
 	}
 
 	@GetMapping("/getcountries/{ctryId}")
-	public CountryBean getCountryById(@PathVariable(value = "ctryId") int ctryId) {
-		return countryService.getCountryById(ctryId);
+	public Country getCountryById(@PathVariable(value = "ctryId") int ctryId) {
+
 	}
 
 	@GetMapping("/getcountries/countryname")
-	public CountryBean getCountryByName(@RequestParam(value = "name") String ctryName) {
-		return countryService.getCountryByName(ctryName);
+	public Country getCountryByName(@RequestParam(value = "name") String ctryName) {
+
 	}
 
 	@PostMapping("/addcountry")
-	public CountryBean addCountry(@RequestBody CountryBean country) {
-		return countryService.addCountry(country);
+	public Country addCountry(@RequestBody Country country) {
+
 	}
 
 	@PutMapping("/updatecountry")
-	public CountryBean updateCountry(@RequestBody CountryBean country) {
-		return countryService.updateCountry(country);
+	public Country updateCountry(@RequestBody Country country) {
+
 	}
 
 	@DeleteMapping("/deletecountry/{ctryId}")
 	public CountryResponse deleteCountry(@PathVariable(value = "ctryId") int ctryId) {
-		return countryService.deleteCountry(ctryId);
+		
 	}
 
 }

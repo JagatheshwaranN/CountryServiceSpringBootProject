@@ -1,85 +1,67 @@
 package com.countryservice.demo.service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-import com.countryservice.demo.bean.CountryBean;
+import com.countryservice.demo.bean.Country;
 import com.countryservice.demo.bean.CountryResponse;
+import com.countryservice.demo.repository.CountryRepository;
 
 /**
  * 
  * @author Jaga
  *
  */
-
 @Component
+@Service
 public class CountryService {
 
-	private static HashMap<Integer, CountryBean> countryMap;
-	private CountryBean country;
+	private Country country;
 	private CountryResponse countryResponse;
 
-	public CountryService() {
-		countryMap = new HashMap<Integer, CountryBean>();
-		CountryBean indiaCountry = new CountryBean(1, "India", "Delhi");
-		CountryBean usaCountry = new CountryBean(2, "Usa", "Washington");
-		CountryBean ukCountry = new CountryBean(3, "United Kingdom", "London");
-		countryMap.put(1, indiaCountry);
-		countryMap.put(2, usaCountry);
-		countryMap.put(3, ukCountry);
+	@Autowired
+	CountryRepository countryRepo;
+
+	public List<Country> getCountries() {
+		return countryRepo.findAll();
 	}
 
-	public List<CountryBean> getCountries() {
-		List<CountryBean> countries = new ArrayList<CountryBean>(countryMap.values());
-		return countries;
+	public Country getCountryById(int countryId) {
+		return countryRepo.findById(countryId).get();
 	}
 
-	public CountryBean getCountryById(int countryId) {
-		country = countryMap.get(countryId);
-		return country;
-	}
-
-	public CountryBean getCountryByName(String countryName) {
-		country = null;
-		for (int id : countryMap.keySet()) {
-			if (countryMap.get(id).getCountryName().equals(countryName)) {
-				country = countryMap.get(id);
-			}
+	public Country getCountryByName(String countryName) {
+		List<Country> countries = countryRepo.findAll();
+		for (Country ctry : countries) {
+			if (ctry.getCountryName().equalsIgnoreCase(countryName))
+				country = ctry;
 		}
 		return country;
 	}
 
-	public CountryBean addCountry(CountryBean country) {
+	public Country addCountry(Country country) {
 		country.setCountryId(getMaxCountryId());
-		countryMap.put(country.getCountryId(), country);
+		countryRepo.save(country);
 		return country;
 	}
 
-	public CountryBean updateCountry(CountryBean country) {
-		if (country.getCountryId() > 0) {
-			countryMap.put(country.getCountryId(), country);
-		}
+	public Country updateCountry(Country country) {
+		countryRepo.save(country);
 		return country;
 	}
 
 	public CountryResponse deleteCountry(int countryId) {
-		countryMap.remove(countryId);
-		countryResponse = new CountryResponse();
-		countryResponse.setMessage("Country deleted successfully..");
+		countryRepo.deleteById(countryId);
+		countryResponse.setMessage("The country is deleted successfully");
 		countryResponse.setCountryId(countryId);
 		return countryResponse;
 	}
 
-	public static int getMaxCountryId() {
-		int maxCountryId = 0;
-		for (int countryId : countryMap.keySet()) {
-			if (maxCountryId <= countryId) {
-				maxCountryId = countryId;
-			}
-		}
-		return maxCountryId + 1;
+	public int getMaxCountryId() {
+		return countryRepo.findAll().size() + 1;
 	}
+
 }
