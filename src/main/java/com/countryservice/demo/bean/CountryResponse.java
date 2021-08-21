@@ -1,10 +1,14 @@
 package com.countryservice.demo.bean;
 
+import org.springframework.stereotype.Component;
+
 /**
  * 
  * @author Jaga
  *
  */
+
+@Component
 public class CountryResponse {
 
 	private int countryId;

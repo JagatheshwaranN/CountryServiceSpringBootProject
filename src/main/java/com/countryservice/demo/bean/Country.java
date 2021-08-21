@@ -12,7 +12,7 @@ import javax.persistence.Table;
  */
 
 @Entity
-@Table(name = "County")
+@Table(name = "Country")
 public class Country {
 
 	@Id
@@ -39,12 +39,6 @@ public class Country {
 	
 	public Country() {
 		
-	}
-
-	public Country(int countryId, String countryName, String countryCapital) {
-		this.countryId = countryId;
-		this.countryName = countryName;
-		this.countryCapital = countryCapital;
 	}
 
 	public int getCountryId() {

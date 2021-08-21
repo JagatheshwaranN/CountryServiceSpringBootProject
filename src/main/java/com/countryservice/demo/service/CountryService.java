@@ -20,10 +20,12 @@ import com.countryservice.demo.repository.CountryRepository;
 public class CountryService {
 
 	private Country country;
-	private CountryResponse countryResponse;
 
 	@Autowired
 	CountryRepository countryRepo;
+
+	@Autowired
+	CountryResponse countryResponse;
 
 	public List<Country> getCountries() {
 		return countryRepo.findAll();

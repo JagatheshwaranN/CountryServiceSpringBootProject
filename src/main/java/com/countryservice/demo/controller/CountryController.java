@@ -3,6 +3,8 @@ package com.countryservice.demo.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,34 +30,59 @@ public class CountryController {
 	@Autowired
 	CountryService countryService;
 
+	private Country country, updatedCountry;
+
 	@GetMapping("/getcountries")
 	public List<Country> getCountries() {
-
+		return countryService.getCountries();
 	}
 
-	@GetMapping("/getcountries/{ctryId}")
-	public Country getCountryById(@PathVariable(value = "ctryId") int ctryId) {
-
+	@GetMapping("/getcountry/{ctryId}")
+	public ResponseEntity<Country> getCountryById(@PathVariable(value = "ctryId") int ctryId) {
+		try {
+			country = countryService.getCountryById(ctryId);
+			return new ResponseEntity<Country>(country, HttpStatus.OK);
+		} catch (Exception ex) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 	}
 
-	@GetMapping("/getcountries/countryname")
-	public Country getCountryByName(@RequestParam(value = "name") String ctryName) {
-
+	@GetMapping("/getcountry/countryname")
+	public ResponseEntity<Country> getCountryByName(@RequestParam(value = "name") String ctryName) {
+		try {
+			country = countryService.getCountryByName(ctryName);
+			return new ResponseEntity<Country>(country, HttpStatus.OK);
+		} catch (Exception ex) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 	}
 
 	@PostMapping("/addcountry")
 	public Country addCountry(@RequestBody Country country) {
-
+		return countryService.addCountry(country);
 	}
 
-	@PutMapping("/updatecountry")
-	public Country updateCountry(@RequestBody Country country) {
-
+	@PutMapping("/updatecountry/{ctryId}")
+	public ResponseEntity<Country> updateCountry(@PathVariable(value = "ctryId") int ctryId,
+			@RequestBody Country updateCtry) {
+		try {
+			country = countryService.getCountryById(ctryId);
+			country.setCountryName(updateCtry.getCountryName());
+			country.setCountryCapital(updateCtry.getCountryCapital());
+			country.setCountryPopulation(updateCtry.getCountryPopulation());
+			country.setCountryStates(updateCtry.getCountryStates());
+			country.setCountryLanguage(updateCtry.getCountryLanguage());
+			country.setCountrySport(updateCtry.getCountrySport());
+			updatedCountry = countryService.updateCountry(country);
+			return new ResponseEntity<Country>(updatedCountry, HttpStatus.OK);
+		} catch (Exception ex) {
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
+		}
 	}
 
 	@DeleteMapping("/deletecountry/{ctryId}")
 	public CountryResponse deleteCountry(@PathVariable(value = "ctryId") int ctryId) {
-		
+		return countryService.deleteCountry(ctryId);
 	}
 
 }
