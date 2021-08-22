@@ -36,9 +36,20 @@ public class Country {
 
 	@Column(name = "CTRY_SPORT")
 	private String countrySport;
-	
+
 	public Country() {
-		
+
+	}
+
+	public Country(int countryId, String countryName, String countryCapital, int countryPopulation, int countryStates,
+			String countryLanguage, String countrySport) {
+		this.countryId = countryId;
+		this.countryName = countryName;
+		this.countryCapital = countryCapital;
+		this.countryPopulation = countryPopulation;
+		this.countryStates = countryStates;
+		this.countryLanguage = countryLanguage;
+		this.countrySport = countrySport;
 	}
 
 	public int getCountryId() {

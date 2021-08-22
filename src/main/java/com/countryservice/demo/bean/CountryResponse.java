@@ -14,6 +14,11 @@ public class CountryResponse {
 	private int countryId;
 	private String message;
 
+	public CountryResponse(int countryId, String message) {
+		this.countryId = countryId;
+		this.message = message;
+	}
+
 	public int getCountryId() {
 		return countryId;
 	}

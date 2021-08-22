@@ -32,7 +32,13 @@ public class CountryService {
 	}
 
 	public Country getCountryById(int countryId) {
-		return countryRepo.findById(countryId).get();
+		// return countryRepo.findById(countryId).get();
+		List<Country> countries = countryRepo.findAll();
+		for (Country ctry : countries) {
+			if (ctry.getCountryId() == countryId)
+				country = ctry;
+		}
+		return country;
 	}
 
 	public Country getCountryByName(String countryName) {
@@ -60,6 +66,13 @@ public class CountryService {
 		countryResponse.setMessage("The country is deleted successfully");
 		countryResponse.setCountryId(countryId);
 		return countryResponse;
+	}
+
+	/**
+	 * This method is for unit testing of delete functionality
+	 */
+	public void deleteCountry1(int countryId) {
+		countryRepo.deleteById(countryId);
 	}
 
 	public int getMaxCountryId() {
