@@ -32,16 +32,26 @@ public class CountryController {
 
 	private Country country, updatedCountry;
 
+//	@GetMapping("/getcountries")
+//	public List<Country> getCountries() {
+//		return countryService.getCountries();
+//	}
+
 	@GetMapping("/getcountries")
-	public List<Country> getCountries() {
-		return countryService.getCountries();
+	public ResponseEntity<List<Country>> getCountries() {
+		try {
+			List<Country> countries = countryService.getCountries();
+			return new ResponseEntity<List<Country>>(countries, HttpStatus.FOUND);
+		} catch (Exception ex) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 	}
 
 	@GetMapping("/getcountry/{ctryId}")
 	public ResponseEntity<Country> getCountryById(@PathVariable(value = "ctryId") int ctryId) {
 		try {
 			country = countryService.getCountryById(ctryId);
-			return new ResponseEntity<Country>(country, HttpStatus.OK);
+			return new ResponseEntity<Country>(country, HttpStatus.FOUND);
 		} catch (Exception ex) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -51,15 +61,25 @@ public class CountryController {
 	public ResponseEntity<Country> getCountryByName(@RequestParam(value = "name") String ctryName) {
 		try {
 			country = countryService.getCountryByName(ctryName);
-			return new ResponseEntity<Country>(country, HttpStatus.OK);
+			return new ResponseEntity<Country>(country, HttpStatus.FOUND);
 		} catch (Exception ex) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
 
+//	@PostMapping("/addcountry")
+//	public Country addCountry(@RequestBody Country country) {
+//		return countryService.addCountry(country);
+//	}
+
 	@PostMapping("/addcountry")
-	public Country addCountry(@RequestBody Country country) {
-		return countryService.addCountry(country);
+	public ResponseEntity<Country> addCountry(@RequestBody Country ctry) {
+		try {
+			country = countryService.addCountry(ctry);
+			return new ResponseEntity<Country>(country, HttpStatus.CREATED);
+		} catch (Exception ex) {
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
+		}
 	}
 
 	@PutMapping("/updatecountry/{ctryId}")
@@ -83,6 +103,21 @@ public class CountryController {
 	@DeleteMapping("/deletecountry/{ctryId}")
 	public CountryResponse deleteCountry(@PathVariable(value = "ctryId") int ctryId) {
 		return countryService.deleteCountry(ctryId);
+	}
+
+	/**
+	 * This method is for unit testing of delete functionality
+	 */
+	@DeleteMapping("/deletecountry/{ctryId}")
+	public ResponseEntity<Country> deleteCountry1(@PathVariable(value = "ctryId") int ctryId) {
+		try {
+			countryService.getCountryById(ctryId);
+			countryService.deleteCountry1(country);
+
+		} catch (Exception ex) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<Country>(country, HttpStatus.OK);
 	}
 
 }

@@ -39,18 +39,22 @@ public class CountryServiceTestUsingMockito {
 	private List<Country> mockCountryData;
 	private Country country;
 
-	public List<Country> mockCountry() {
+	public List<Country> mockCountries() {
 		mockCountryData = new ArrayList<Country>();
 		mockCountryData.add(new Country(1, "India", "Delhi", 100000, 25, "Tamil", "Hockey"));
 		mockCountryData.add(new Country(2, "Usa", "Washington", 50000, 40, "English", "Baseball"));
 		return mockCountryData;
+	}
 
+	public Country mockCountry() {
+		country = new Country(1, "India", "Delhi", 100000, 25, "Hindi", "Hockey");
+		return country;
 	}
 
 	@Test
 	@Order(1)
 	public void test_getCountries() {
-		when(countryRepo.findAll()).thenReturn(mockCountry());
+		when(countryRepo.findAll()).thenReturn(mockCountries());
 		Assertions.assertEquals(2, countryService.getCountries().size());
 	}
 
@@ -58,7 +62,7 @@ public class CountryServiceTestUsingMockito {
 	@Order(2)
 	public void test_getCountryById() {
 		int countryId = 1;
-		when(countryRepo.findAll()).thenReturn(mockCountry());
+		when(countryRepo.findAll()).thenReturn(mockCountries());
 		Assertions.assertEquals(1, countryService.getCountryById(countryId).getCountryId());
 	}
 
@@ -66,7 +70,7 @@ public class CountryServiceTestUsingMockito {
 	@Order(3)
 	public void test_getCountryByName() {
 		String countryName = "India";
-		when(countryRepo.findAll()).thenReturn(mockCountry());
+		when(countryRepo.findAll()).thenReturn(mockCountries());
 		Assertions.assertEquals(countryName, countryService.getCountryByName(countryName).getCountryName());
 	}
 
@@ -81,7 +85,7 @@ public class CountryServiceTestUsingMockito {
 	@Test
 	@Order(5)
 	public void test_updateCountry() {
-		country = new Country(3, "Uk", "London", 25000, 20, "English", "Cricket");
+		country = new Country(3, "Uk", "London", 25000, 25, "English", "Cricket");
 		when(countryRepo.save(country)).thenReturn(country);
 		Assertions.assertEquals(country, countryService.updateCountry(country));
 	}
@@ -89,9 +93,8 @@ public class CountryServiceTestUsingMockito {
 	@Test
 	@Order(6)
 	public void test_deleteCountry() {
-		int countryId = 1;
-		countryService.deleteCountry1(countryId);
-		verify(countryRepo, times(1)).deleteById(countryId);
+		countryService.deleteCountry1(mockCountry());
+		verify(countryRepo, times(1)).delete(country);
 	}
 
 }
