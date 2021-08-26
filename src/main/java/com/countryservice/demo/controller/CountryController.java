@@ -100,10 +100,10 @@ public class CountryController {
 		}
 	}
 
-	@DeleteMapping("/deletecountry/{ctryId}")
-	public CountryResponse deleteCountry(@PathVariable(value = "ctryId") int ctryId) {
-		return countryService.deleteCountry(ctryId);
-	}
+//	@DeleteMapping("/deletecountry/{ctryId}")
+//	public CountryResponse deleteCountry(@PathVariable(value = "ctryId") int ctryId) {
+//		return countryService.deleteCountry(ctryId);
+//	}
 
 	/**
 	 * This method is for unit testing of delete functionality
@@ -113,7 +113,6 @@ public class CountryController {
 		try {
 			countryService.getCountryById(ctryId);
 			countryService.deleteCountry1(country);
-
 		} catch (Exception ex) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
