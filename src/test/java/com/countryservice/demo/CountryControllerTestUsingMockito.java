@@ -1,5 +1,6 @@
 package com.countryservice.demo;
 
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -36,10 +37,11 @@ public class CountryControllerTestUsingMockito {
 	@InjectMocks
 	CountryController countryController;
 
-	private List<Country> mockCountryData;
-	private Country country;
+	
 	private ResponseEntity<List<Country>> listResponse;
 	private ResponseEntity<Country> response;
+	private List<Country> mockCountryData;
+	private Country country;
 	private int countryId;
 
 	public List<Country> mockCountries() {
@@ -106,12 +108,12 @@ public class CountryControllerTestUsingMockito {
 		Assertions.assertEquals(20000, response.getBody().getCountryPopulation());
 		Assertions.assertEquals(25, response.getBody().getCountryStates());
 	}
-	
+
 	@Test
 	@Order(6)
 	public void test_deleteCountry() {
 		countryId = 3;
-		when(countryService.getCountryById(countryId)).thenReturn(mockCountry());
+		doNothing().when(countryService).deleteCountry1(countryId);
 		response = countryController.deleteCountry1(countryId);
 		Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
 	}

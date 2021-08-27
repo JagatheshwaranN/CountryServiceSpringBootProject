@@ -4,6 +4,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -147,8 +148,8 @@ public class CountryControllerTestUsingMockMVC {
 	@Order(6)
 	public void test_deleteCountry() throws Exception {
 		countryId = 3;
-		when(countryService.getCountryById(countryId)).thenReturn(mockCountry());
-		this.mockMvc.perform(delete("/deletecountry/{ctryId}", countryId))
+		doNothing().when(countryService).deleteCountry1(countryId);
+		this.mockMvc.perform(delete("/deletecountries/{ctryId}", countryId))
 		.andExpect(status().isOk())
 		.andDo(print());
 	}

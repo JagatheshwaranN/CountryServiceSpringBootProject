@@ -93,8 +93,9 @@ public class CountryServiceTestUsingMockito {
 	@Test
 	@Order(6)
 	public void test_deleteCountry() {
-		countryService.deleteCountry1(mockCountry());
-		verify(countryRepo, times(1)).delete(country);
+		int countryId = 1;
+		countryService.deleteCountry1(countryId);
+		verify(countryRepo, times(1)).deleteById(countryId);
 	}
 
 }

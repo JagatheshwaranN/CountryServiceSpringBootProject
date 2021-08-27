@@ -69,10 +69,10 @@ public class CountryService {
 	}
 
 	/**
-	 * This method is for unit testing of delete functionality
+	 * This method is used only for unit testing of delete functionality
 	 */
-	public void deleteCountry1(Country country) {
-		countryRepo.delete(country);
+	public void deleteCountry1(int countryId) {
+		countryRepo.deleteById(countryId);	
 	}
 
 	public int getMaxCountryId() {

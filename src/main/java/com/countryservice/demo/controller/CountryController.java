@@ -31,11 +31,8 @@ public class CountryController {
 	CountryService countryService;
 
 	private Country country, updatedCountry;
+	private CountryResponse countryResponse;
 
-//	@GetMapping("/getcountries")
-//	public List<Country> getCountries() {
-//		return countryService.getCountries();
-//	}
 
 	@GetMapping("/getcountries")
 	public ResponseEntity<List<Country>> getCountries() {
@@ -67,11 +64,6 @@ public class CountryController {
 		}
 	}
 
-//	@PostMapping("/addcountry")
-//	public Country addCountry(@RequestBody Country country) {
-//		return countryService.addCountry(country);
-//	}
-
 	@PostMapping("/addcountry")
 	public ResponseEntity<Country> addCountry(@RequestBody Country ctry) {
 		try {
@@ -100,23 +92,30 @@ public class CountryController {
 		}
 	}
 
-//	@DeleteMapping("/deletecountry/{ctryId}")
-//	public CountryResponse deleteCountry(@PathVariable(value = "ctryId") int ctryId) {
-//		return countryService.deleteCountry(ctryId);
-//	}
+	@DeleteMapping("/deletecountry/{ctryId}")
+	public ResponseEntity<CountryResponse> deleteCountry(@PathVariable(value = "ctryId") int ctryId) {
+		try {
+			countryResponse = countryService.deleteCountry(ctryId);
+		} catch (Exception ex) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<CountryResponse>(countryResponse, HttpStatus.OK);
+	}
 
 	/**
-	 * This method is for unit testing of delete functionality
+	 * This method is used only for unit testing of delete functionality
 	 */
-	@DeleteMapping("/deletecountry/{ctryId}")
+	@DeleteMapping("/deletecountries/{ctryId}")
 	public ResponseEntity<Country> deleteCountry1(@PathVariable(value = "ctryId") int ctryId) {
 		try {
-			countryService.getCountryById(ctryId);
-			countryService.deleteCountry1(country);
+			countryService.deleteCountry1(ctryId);
 		} catch (Exception ex) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<Country>(country, HttpStatus.OK);
 	}
+	
+
+	
 
 }
